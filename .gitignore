@@ -1,0 +1,102 @@
+# Folders
+lua542
+bin
+bin/
+build
+build/
+test
+libs-git
+libs/wxWidgets
+libs/boost_1_89_0/boost
+libs/boost_1_89_0/linux
+libs/boost_1_89_0/windows
+libs/SFML
+cutting_room_floor
+cutting_room_floor/
+cutting_room_floor/*
+
+# Utils
+*.drawio
+*.bkp
+
+# CMake
+*.cmake
+Makefile
+CMakeCache.txt
+CMakeFiles
+CMakeFiles/
+
+# QtCreator
+*.user
+
+# Eclipse
+.cproject
+.autotools
+.project
+Release
+Debug
+.settings
+.clangd
+.clang-format
+
+# LaTeX
+#*.pdf
+*.acn
+*.acr
+*.alg
+*.aux
+*.glg
+*.glo
+*.gls
+*.inst
+*.log
+*.toc
+*.xmpi
+*.ist
+*.synctex.gz
+*.lol
+*.lof
+*.lot
+
+# Visual studio
+.vs
+x64
+*.sln
+*.vcxproj
+*.vcxproj.filters
+*.vcxproj.user
+*.aps
+*.rc
+
+# Prerequisites
+*.d
+
+# Compiled Object files
+*.slo
+*.lo
+*.o
+*.obj
+
+# Precompiled Headers
+*.gch
+*.pch
+
+# Compiled Dynamic libraries
+*.so
+*.dylib
+*.dll
+
+# Fortran module files
+*.mod
+*.smod
+
+# Compiled Static libraries
+*.lai
+*.la
+#*.a
+#*.lib
+
+# Executables
+*.exe
+*.out
+*.app
