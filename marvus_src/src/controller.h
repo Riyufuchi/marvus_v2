@@ -12,6 +12,7 @@
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QStandardItemModel>
+#include <QMessageBox>
 // Nocovka
 #include "io/io_tools.hpp"
 #include "qt_tools/database.h"

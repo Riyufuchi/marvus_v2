@@ -9,8 +9,11 @@
 
 #include <QSqlDatabase>
 #include <QSqlQuery>
+#include <QSqlError>
 #include <QSqlTableModel>
 #include <QJsonObject>
+// Marvus
+#include "../marvus/marvus_sql.hpp"
 
 namespace marvus
 {
@@ -19,8 +22,10 @@ class Database
 {
 private:
 	QSqlDatabase database;
+	QString m_last_error;
 public:
-	Database(const QString& DB_NAME = "nocovka_erp.db");
+	Database(const QString& DB_NAME = "marvus.db");
+	const QString& get_last_error() const;
 	bool initialize_database();
 	bool insert_from_json(const QJsonObject& json);
 	QSqlTableModel* obtain_model(const QString& TABLE_NAME, QObject* parent, const std::vector<QString>& header_labels);

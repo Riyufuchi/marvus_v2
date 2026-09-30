@@ -7,7 +7,7 @@
 #include "database.h"
 
 
-marvus::Database::Database(const QString& DB_NAME) : database(QSqlDatabase::addDatabase("QSQLITE"))
+marvus::Database::Database(const QString& DB_NAME) : database(QSqlDatabase::addDatabase("QSQLITE")), m_last_error("")
 {
 	database.setDatabaseName(DB_NAME);
 	database.open();
@@ -16,16 +16,27 @@ marvus::Database::Database(const QString& DB_NAME) : database(QSqlDatabase::addD
 bool marvus::Database::initialize_database()
 {
 	QSqlQuery query(database);
-	return query.exec(R"(
-		CREATE TABLE IF NOT EXISTS ITEMS (
-			id INTEGER PRIMARY KEY AUTOINCREMENT,
-			emp_id TEXT,
-			job_id TEXT,
-			msg TEXT,
-			gps_lat REAL,
-			gps_lon REAL
-		)
-	)");
+	std::vector<QString> queries;
+	queries.emplace_back("PRAGMA foreign_keys = ON");
+	queries.emplace_back(marvus::create_categories_table);
+	queries.emplace_back(marvus::create_entities_table);
+	queries.emplace_back(marvus::create_money_flow_table);
+
+	for (const auto q : queries)
+	{
+		if (!query.exec(q))
+		{
+			m_last_error = query.lastError().text();
+			return true;
+		}
+	}
+
+	return false;
+}
+
+const QString& marvus::Database::get_last_error() const
+{
+	return m_last_error;
 }
 
 bool marvus::Database::insert_from_json(const QJsonObject& json)
@@ -42,7 +53,13 @@ bool marvus::Database::insert_from_json(const QJsonObject& json)
 	query.addBindValue(json["gps-lat"].toDouble());
 	query.addBindValue(json["gps-lon"].toDouble());
 
-	return query.exec();
+	if (!query.exec())
+	{
+		m_last_error = query.lastError().text();
+		return true;
+	}
+
+	return false;
 }
 
 QSqlTableModel* marvus::Database::obtain_model(const QString& TABLE_NAME, QObject* parent, const std::vector<QString>& header_labels)
