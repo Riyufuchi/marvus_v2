@@ -1,7 +1,7 @@
 //==============================================================================
 // Author     : riyufuchi
 // Created on : 2026-04-28
-// Last edit  : 2026-04-28
+// Last edit  : 2026-10-04
 // Copyright  : Copyright (c) 2026, riyufuchi
 //==============================================================================
 #include "controller.h"
@@ -9,12 +9,21 @@
 
 marvus::Controller::Controller()
 {
-	db_connection.is_open();
+}
 
-	if (db_connection.initialize_database())
+bool marvus::Controller::create_new_database(QWidget* parent)
+{
+	return true;
+}
+
+bool marvus::Controller::open_database(QWidget* parent)
+{
+	if (db_connection.open_database() && db_connection.initialize_database())
 	{
-		QMessageBox::critical(nullptr, "Chyba databáze", db_connection.get_last_error());
+		QMessageBox::critical(parent, "Chyba databáze", db_connection.get_last_error());
+		return true;
 	}
+	return false;
 }
 
 void marvus::Controller::import_from_json_to_db(QWidget* parent)

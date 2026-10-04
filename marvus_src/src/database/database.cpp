@@ -7,10 +7,14 @@
 #include "database.h"
 
 
-marvus::Database::Database(const QString& DB_NAME) : database(QSqlDatabase::addDatabase("QSQLITE")), m_last_error("")
+marvus::Database::Database() : database(QSqlDatabase::addDatabase("QSQLITE")), m_last_error("Unknown error")
+{
+}
+
+bool marvus::Database::open_database(const QString& DB_NAME)
 {
 	database.setDatabaseName(DB_NAME);
-	database.open();
+	return database.open();
 }
 
 bool marvus::Database::initialize_database()
@@ -104,24 +108,6 @@ QSqlQueryModel* marvus::Database::get_current_month_expenses(QObject* parent)
 		m_last_error = model->lastError().text();
 		return 0;
 	}
-
-	return model;
-}
-
-QSqlTableModel* marvus::Database::obtain_model(const QString& TABLE_NAME, QObject* parent, const std::vector<QString>& header_labels)
-{
-	QSqlTableModel* model = new QSqlTableModel(parent, database);
-	model->setTable(TABLE_NAME);
-	model->setEditStrategy(QSqlTableModel::OnManualSubmit);
-	model->select();
-
-	int x = 1;
-	for (const auto& item : header_labels)
-	{
-		model->setHeaderData(x, Qt::Horizontal, item);
-		x++;
-	}
-
 
 	return model;
 }

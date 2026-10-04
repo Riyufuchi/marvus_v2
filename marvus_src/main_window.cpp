@@ -10,9 +10,12 @@
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow)
 {
 	ui->setupUi(this);
-	this->model = controller.select(this);
-	ui->db_view->setModel(model);
-	ui->db_view->setEditTriggers(QAbstractItemView::NoEditTriggers);
+	if (!controller.open_database(this))
+	{
+		this->model = controller.select(this);
+		ui->db_view->setModel(model);
+		ui->db_view->setEditTriggers(QAbstractItemView::NoEditTriggers);
+	}
 }
 
 MainWindow::~MainWindow()
@@ -20,12 +23,10 @@ MainWindow::~MainWindow()
 	delete ui;
 }
 
-
 void MainWindow::on_actionExit_triggered()
 {
 	QApplication::quit();
 }
-
 
 void MainWindow::on_actionImport_triggered()
 {
@@ -76,5 +77,15 @@ void MainWindow::on_actionImport_triggered()
 	}
 
 	model->refresh();
+}
+
+void MainWindow::on_actionNew_triggered()
+{
+
+}
+
+void MainWindow::on_actionOpen_triggered()
+{
+
 }
 

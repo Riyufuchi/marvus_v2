@@ -1,7 +1,7 @@
 //==============================================================================
 // Author     : riyufuchi
 // Created on : 2026-04-28
-// Last edit  : 2026-04-28
+// Last edit  : 2026-10-04
 // Copyright  : Copyright (c) 2026, riyufuchi
 //==============================================================================
 #ifndef CONTROLLER_H
@@ -24,9 +24,16 @@ class Controller
 {
 private:
 	Database db_connection;
-	std::vector<QString> labels;
 public:
 	Controller();
+	/*
+	 * Returns false on success
+	 */
+	bool create_new_database(QWidget* parent);
+	/*
+	 * Returns false on success
+	 */
+	bool open_database(QWidget* parent);
 	void import_from_json_to_db(QWidget* parent);
 	QSqlQueryModel* select(QObject* parent);
 	Database& expose_db();

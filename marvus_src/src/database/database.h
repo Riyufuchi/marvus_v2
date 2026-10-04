@@ -26,14 +26,17 @@ private:
 	QSqlDatabase database;
 	QString m_last_error;
 public:
-	Database(const QString& DB_NAME = "marvus.db");
-	const QString& get_last_error() const;
+	Database();
+	bool open_database(const QString& DB_NAME = "marvus.db");
 	bool initialize_database();
+	//
 	int insert_category(const EnumEntity& category);
 	int insert_entity(const EnumEntity& entity);
 	int insert_money_flow(const MoneyFlow& money_flow);
-	QSqlTableModel* obtain_model(const QString& TABLE_NAME, QObject* parent, const std::vector<QString>& header_labels);
+	//W
 	QSqlQueryModel* get_current_month_expenses(QObject* parent);
+	//
+	const QString& get_last_error() const;
 	// IS functions
 	bool is_open() const;
 };
