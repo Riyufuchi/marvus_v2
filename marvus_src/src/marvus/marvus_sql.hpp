@@ -7,7 +7,7 @@
 #ifndef MARVUS_SQL_HPP
 #define MARVUS_SQL_HPP
 
-namespace marvus
+namespace marvus_sql
 {
 
 constexpr auto create_categories_table = R"(
@@ -36,6 +36,21 @@ date TEXT NOT NULL,
 FOREIGN KEY (entity_id) REFERENCES ENTITIES(entity_id),
 FOREIGN KEY (category_id) REFERENCES CATEGORIES(category_id)
 )
+)";
+
+constexpr auto insert_entity = R"(
+INSERT INTO ENTITIES (name)
+VALUES (:name)
+)";
+
+constexpr auto insert_category = R"(
+INSERT INTO CATEGORIES (name)
+VALUES (:name)
+)";
+
+constexpr auto insert_money_flow = R"(
+INSERT INTO MONEY_FLOWS  (entity_id, category_id, amount, date)
+VALUES (:entity_id, :category_id, :amount, :date)
 )";
 
 }

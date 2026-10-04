@@ -15,7 +15,7 @@
 #include <QMessageBox>
 // Nocovka
 #include "io/io_tools.hpp"
-#include "qt_tools/database.h"
+#include "database/database.h"
 
 namespace marvus
 {

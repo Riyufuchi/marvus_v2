@@ -14,6 +14,8 @@
 #include <QJsonObject>
 // Marvus
 #include "../marvus/marvus_sql.hpp"
+#include "enum_entity.h"
+#include "money_flow.h"
 
 namespace marvus
 {
@@ -27,6 +29,9 @@ public:
 	Database(const QString& DB_NAME = "marvus.db");
 	const QString& get_last_error() const;
 	bool initialize_database();
+	int insert_category(const EnumEntity& category);
+	int insert_entity(const EnumEntity& entity);
+	int insert_money_flow(const MoneyFlow& money_flow);
 	bool insert_from_json(const QJsonObject& json);
 	QSqlTableModel* obtain_model(const QString& TABLE_NAME, QObject* parent, const std::vector<QString>& header_labels);
 	// IS functions

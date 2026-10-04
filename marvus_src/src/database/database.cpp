@@ -18,9 +18,9 @@ bool marvus::Database::initialize_database()
 	QSqlQuery query(database);
 	std::vector<QString> queries;
 	queries.emplace_back("PRAGMA foreign_keys = ON");
-	queries.emplace_back(marvus::create_categories_table);
-	queries.emplace_back(marvus::create_entities_table);
-	queries.emplace_back(marvus::create_money_flow_table);
+	queries.emplace_back(marvus_sql::create_categories_table);
+	queries.emplace_back(marvus_sql::create_entities_table);
+	queries.emplace_back(marvus_sql::create_money_flow_table);
 
 	for (const auto q : queries)
 	{
@@ -32,6 +32,60 @@ bool marvus::Database::initialize_database()
 	}
 
 	return false;
+}
+
+int marvus::Database::insert_category(const EnumEntity& category)
+{
+	QSqlQuery query(database);
+
+	query.prepare(marvus_sql::insert_category);
+
+	query.bindValue(":name", category.get_name());
+
+	if (!query.exec())
+	{
+		m_last_error = query.lastError().text();
+		return 0;
+	}
+
+	return query.lastInsertId().toInt();
+}
+
+int marvus::Database::insert_entity(const EnumEntity& entity)
+{
+	QSqlQuery query(database);
+
+	query.prepare(marvus_sql::insert_entity);
+
+	query.bindValue(":name", entity.get_name());
+
+	if (!query.exec())
+	{
+		m_last_error = query.lastError().text();
+		return 0;
+	}
+
+	return query.lastInsertId().toInt();
+}
+
+int marvus::Database::insert_money_flow(const MoneyFlow& money_flow)
+{
+	QSqlQuery query(database);
+
+	query.prepare(marvus_sql::insert_money_flow);
+
+	query.bindValue(":entity_id", money_flow.get_entity_id());
+	query.bindValue(":category_id", money_flow.get_category_id());
+	query.bindValue(":amount", money_flow.get_value()); // -399 Kč
+	query.bindValue(":date", money_flow.get_date());
+
+	if (!query.exec())
+	{
+		m_last_error = query.lastError().text();
+		return 0;
+	}
+
+	return query.lastInsertId().toInt();
 }
 
 const QString& marvus::Database::get_last_error() const
