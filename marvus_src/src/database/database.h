@@ -1,7 +1,7 @@
 //==============================================================================
 // Author     : riyufuchi
 // Created on : 2026-04-28
-// Last edit  : 2026-04-28
+// Last edit  : 2026-10-04
 // Copyright  : Copyright (c) 2026, riyufuchi
 //==============================================================================
 #ifndef DATABASE_H
@@ -32,8 +32,8 @@ public:
 	int insert_category(const EnumEntity& category);
 	int insert_entity(const EnumEntity& entity);
 	int insert_money_flow(const MoneyFlow& money_flow);
-	bool insert_from_json(const QJsonObject& json);
 	QSqlTableModel* obtain_model(const QString& TABLE_NAME, QObject* parent, const std::vector<QString>& header_labels);
+	QSqlQueryModel* get_current_month_expenses(QObject* parent);
 	// IS functions
 	bool is_open() const;
 };

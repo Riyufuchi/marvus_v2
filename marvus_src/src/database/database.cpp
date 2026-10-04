@@ -1,7 +1,7 @@
 //==============================================================================
 // Author     : riyufuchi
 // Created on : 2026-04-28
-// Last edit  : 2026-04-28
+// Last edit  : 2026-10-04
 // Copyright  : Copyright (c) 2026, riyufuchi
 //==============================================================================
 #include "database.h"
@@ -93,27 +93,19 @@ const QString& marvus::Database::get_last_error() const
 	return m_last_error;
 }
 
-bool marvus::Database::insert_from_json(const QJsonObject& json)
+QSqlQueryModel* marvus::Database::get_current_month_expenses(QObject* parent)
 {
-	QSqlQuery query(database);
-	query.prepare(R"(
-		INSERT INTO ITEMS (emp_id, job_id, msg, gps_lat, gps_lon)
-		VALUES (?, ?, ?, ?, ?)
-	)");
+	QSqlQueryModel* model = new QSqlQueryModel(parent);
 
-	query.addBindValue(json["emp-id"].toString());
-	query.addBindValue(json["job-id"].toString());
-	query.addBindValue(json["msg"].toString());
-	query.addBindValue(json["gps-lat"].toDouble());
-	query.addBindValue(json["gps-lon"].toDouble());
+	model->setQuery(marvus_sql::select_current_month_expenses, database);
 
-	if (!query.exec())
+	if (model->lastError().isValid())
 	{
-		m_last_error = query.lastError().text();
-		return true;
+		m_last_error = model->lastError().text();
+		return 0;
 	}
 
-	return false;
+	return model;
 }
 
 QSqlTableModel* marvus::Database::obtain_model(const QString& TABLE_NAME, QObject* parent, const std::vector<QString>& header_labels)

@@ -39,18 +39,31 @@ FOREIGN KEY (category_id) REFERENCES CATEGORIES(category_id)
 )";
 
 constexpr auto insert_entity = R"(
-INSERT INTO ENTITIES (name)
+INSERT INTO ENTITIES (entity_name)
 VALUES (:name)
 )";
 
 constexpr auto insert_category = R"(
-INSERT INTO CATEGORIES (name)
+INSERT INTO CATEGORIES (category_name)
 VALUES (:name)
 )";
 
 constexpr auto insert_money_flow = R"(
 INSERT INTO MONEY_FLOWS  (entity_id, category_id, amount, date)
 VALUES (:entity_id, :category_id, :amount, :date)
+)";
+
+constexpr auto select_current_month_expenses = R"(
+SELECT
+CATEGORIES.category_name AS "Kategorie",
+SUM(MONEY_FLOWS.amount) AS "Celkem"
+FROM MONEY_FLOWS
+JOIN CATEGORIES
+	ON MONEY_FLOWS.category_id = CATEGORIES.category_id
+WHERE MONEY_FLOWS.date >= date('now', 'start of month')
+AND MONEY_FLOWS.date < date('now', 'start of month', '+1 month')
+GROUP BY CATEGORIES.category_id
+ORDER BY "Kategorie"
 )";
 
 }

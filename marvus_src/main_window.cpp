@@ -1,21 +1,18 @@
 //==============================================================================
 // Author     : riyufuchi
 // Created on : 2026-04-15
-// Last edit  : 2026-04-15
+// Last edit  : 2026-10-04
 // Copyright  : Copyright (c) 2026, riyufuchi
 //==============================================================================
 #include "main_window.h"
 #include "ui_main_window.h"
 
-MainWindow::MainWindow(QWidget *parent)
-	: QMainWindow(parent)
-	, ui(new Ui::MainWindow)
+MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow)
 {
 	ui->setupUi(this);
-	this->model = controller.obtain_model("ITEMS", this);
+	this->model = controller.select(this);
 	ui->db_view->setModel(model);
 	ui->db_view->setEditTriggers(QAbstractItemView::NoEditTriggers);
-	ui->db_view->hideColumn(0);
 }
 
 MainWindow::~MainWindow()
@@ -32,36 +29,52 @@ void MainWindow::on_actionExit_triggered()
 
 void MainWindow::on_actionImport_triggered()
 {
-	controller.import_from_json_to_db(this);
+	//controller.import_from_json_to_db(this);
+
+	marvus::EnumEntity cat("Food");
+	marvus::EnumEntity cat2("AFood");
+	marvus::EnumEntity entity("Lidl");
+
+	if (!controller.expose_db().insert_category(cat))
+	{
+		QMessageBox::critical(this, "Chyba databáze", controller.expose_db().get_last_error());
+	}
+
+	if (!controller.expose_db().insert_category(cat2))
+	{
+		QMessageBox::critical(this, "Chyba databáze", controller.expose_db().get_last_error());
+	}
+
+	if (!controller.expose_db().insert_entity(entity))
+	{
+		QMessageBox::critical(this, "Chyba databáze", controller.expose_db().get_last_error());
+	}
+
+	marvus::MoneyFlow m1(1, 1, -100, "2026-10-1");
+	marvus::MoneyFlow m2(1, 1, -200, "2026-10-10");
+	marvus::MoneyFlow m4(1, 2, -200, "2026-10-10");
+	marvus::MoneyFlow m3(1, 1, 1000, "2026-1-10");
+
+	if (!controller.expose_db().insert_money_flow(m1))
+	{
+		QMessageBox::critical(this, "Chyba databáze", controller.expose_db().get_last_error());
+	}
+
+	if (!controller.expose_db().insert_money_flow(m2))
+	{
+		QMessageBox::critical(this, "Chyba databáze", controller.expose_db().get_last_error());
+	}
+
+	if (!controller.expose_db().insert_money_flow(m3))
+	{
+		QMessageBox::critical(this, "Chyba databáze", controller.expose_db().get_last_error());
+	}
+
+	if (!controller.expose_db().insert_money_flow(m4))
+	{
+		QMessageBox::critical(this, "Chyba databáze", controller.expose_db().get_last_error());
+	}
+
 	model->refresh();
-
-	/*nocovka::QJsonOptional doc_opt = nocovka::import_json(this);
-
-	if (!doc_opt && !((*doc_opt).isObject()))
-		return;
-
-	QJsonObject obj = doc_opt.value().object();
-
-	QStandardItemModel *model = new QStandardItemModel(this);
-
-	QStringList headers;
-	for (auto key : obj.keys())
-	{
-		headers << key;
-	}
-	model->setColumnCount(headers.size());
-	model->setHorizontalHeaderLabels(headers);
-
-	QList<QStandardItem*> row;
-
-	for (auto key : obj.keys())
-	{
-		QString value = obj.value(key).toVariant().toString();
-		row.append(new QStandardItem(value));
-	}
-
-	model->appendRow(row);
-
-	ui->tableView->setModel(model);*/
 }
 

@@ -28,7 +28,8 @@ private:
 public:
 	Controller();
 	void import_from_json_to_db(QWidget* parent);
-	QSqlTableModel* obtain_model(const QString& TABLE_NAME, QObject* parent);
+	QSqlQueryModel* select(QObject* parent);
+	Database& expose_db();
 };
 
 }

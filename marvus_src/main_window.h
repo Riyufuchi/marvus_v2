@@ -1,7 +1,7 @@
 //==============================================================================
 // Author     : riyufuchi
 // Created on : 2026-04-15
-// Last edit  : 2026-04-15
+// Last edit  : 2026-10-04
 // Copyright  : Copyright (c) 2026, riyufuchi
 //==============================================================================
 #ifndef MAIN_WINDOW_H
@@ -21,7 +21,7 @@ class MainWindow : public QMainWindow
 
 private:
 	marvus::Controller controller;
-	QSqlTableModel* model;
+	QSqlQueryModel* model;
 
 public:
 	MainWindow(QWidget *parent = nullptr);
