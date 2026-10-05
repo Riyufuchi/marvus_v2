@@ -1,7 +1,7 @@
 //==============================================================================
 // Author     : riyufuchi
 // Created on : 2026-04-28
-// Last edit  : 2026-10-04
+// Last edit  : 2026-10-05
 // Copyright  : Copyright (c) 2026, riyufuchi
 //==============================================================================
 #include "database.h"
@@ -44,7 +44,7 @@ int marvus::Database::insert_category(const EnumEntity& category)
 
 	query.prepare(marvus_sql::insert_category);
 
-	query.bindValue(":name", category.get_name());
+	query.bindValue(":category_name", category.get_name());
 
 	if (!query.exec())
 	{
@@ -61,7 +61,7 @@ int marvus::Database::insert_entity(const EnumEntity& entity)
 
 	query.prepare(marvus_sql::insert_entity);
 
-	query.bindValue(":name", entity.get_name());
+	query.bindValue(":entity_name", entity.get_name());
 
 	if (!query.exec())
 	{
@@ -97,11 +97,11 @@ const QString& marvus::Database::get_last_error() const
 	return m_last_error;
 }
 
-QSqlQueryModel* marvus::Database::get_current_month_expenses(QObject* parent)
+QSqlQueryModel* marvus::Database::select(QObject* parent, const QString& select_sql)
 {
 	QSqlQueryModel* model = new QSqlQueryModel(parent);
 
-	model->setQuery(marvus_sql::select_current_month_expenses, database);
+	model->setQuery(select_sql, database);
 
 	if (model->lastError().isValid())
 	{
@@ -110,6 +110,26 @@ QSqlQueryModel* marvus::Database::get_current_month_expenses(QObject* parent)
 	}
 
 	return model;
+}
+
+QSqlQueryModel* marvus::Database::get_current_month_expenses(QObject* parent)
+{
+	return select(parent, marvus_sql::select_current_month_expenses);
+}
+
+QSqlQueryModel* marvus::Database::get_entities(QObject* parent)
+{
+	return select(parent, marvus_sql::select_all_entities);
+}
+
+QSqlQueryModel* marvus::Database::get_categories(QObject* parent)
+{
+	return select(parent, marvus_sql::select_all_categories);
+}
+
+QSqlQueryModel* marvus::Database::get_money_flows(QObject* parent)
+{
+	return select(parent, marvus_sql::select_all_money_flows);
 }
 
 bool marvus::Database::is_open() const

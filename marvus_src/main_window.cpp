@@ -1,7 +1,7 @@
 //==============================================================================
 // Author     : riyufuchi
 // Created on : 2026-04-15
-// Last edit  : 2026-10-04
+// Last edit  : 2026-10-05
 // Copyright  : Copyright (c) 2026, riyufuchi
 //==============================================================================
 #include "main_window.h"
@@ -10,12 +10,7 @@
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow)
 {
 	ui->setupUi(this);
-	if (!controller.open_database(this))
-	{
-		this->model = controller.select(this);
-		ui->db_view->setModel(model);
-		ui->db_view->setEditTriggers(QAbstractItemView::NoEditTriggers);
-	}
+	on_actionOpen_triggered();
 }
 
 MainWindow::~MainWindow()
@@ -32,60 +27,69 @@ void MainWindow::on_actionImport_triggered()
 {
 	//controller.import_from_json_to_db(this);
 
-	marvus::EnumEntity cat("Food");
-	marvus::EnumEntity cat2("AFood");
-	marvus::EnumEntity entity("Lidl");
-
-	if (!controller.expose_db().insert_category(cat))
+	for (const auto& c : marvus::categories())
 	{
-		QMessageBox::critical(this, "Chyba databáze", controller.expose_db().get_last_error());
+		if (!controller.expose_db().insert_category(c))
+		{
+			QMessageBox::critical(this, c.get_name(), controller.expose_db().get_last_error());
+			break;
+		}
 	}
 
-	if (!controller.expose_db().insert_category(cat2))
+	for (const auto& e : marvus::entities())
 	{
-		QMessageBox::critical(this, "Chyba databáze", controller.expose_db().get_last_error());
+		if (!controller.expose_db().insert_entity(e))
+		{
+			QMessageBox::critical(this, e.get_name(), controller.expose_db().get_last_error());
+			break;
+		}
 	}
 
-	if (!controller.expose_db().insert_entity(entity))
+	for (const auto& mf : marvus::money_flow())
 	{
-		QMessageBox::critical(this, "Chyba databáze", controller.expose_db().get_last_error());
-	}
-
-	marvus::MoneyFlow m1(1, 1, -100, "2026-10-1");
-	marvus::MoneyFlow m2(1, 1, -200, "2026-10-10");
-	marvus::MoneyFlow m4(1, 2, -200, "2026-10-10");
-	marvus::MoneyFlow m3(1, 1, 1000, "2026-1-10");
-
-	if (!controller.expose_db().insert_money_flow(m1))
-	{
-		QMessageBox::critical(this, "Chyba databáze", controller.expose_db().get_last_error());
-	}
-
-	if (!controller.expose_db().insert_money_flow(m2))
-	{
-		QMessageBox::critical(this, "Chyba databáze", controller.expose_db().get_last_error());
-	}
-
-	if (!controller.expose_db().insert_money_flow(m3))
-	{
-		QMessageBox::critical(this, "Chyba databáze", controller.expose_db().get_last_error());
-	}
-
-	if (!controller.expose_db().insert_money_flow(m4))
-	{
-		QMessageBox::critical(this, "Chyba databáze", controller.expose_db().get_last_error());
+		if (!controller.expose_db().insert_money_flow(mf))
+		{
+			QMessageBox::critical(this, mf.get_date(), controller.expose_db().get_last_error());
+			break;
+		}
 	}
 
 	model->refresh();
+	entity_model->refresh();
+	category_model->refresh();
+	all_model->refresh();
+}
+
+void  MainWindow::init_models()
+{
+	this->model = controller.select(this);
+	ui->db_view->setModel(model);
+	ui->db_view->setEditTriggers(QAbstractItemView::NoEditTriggers);
+
+	this->entity_model = controller.select_entities(this);
+	ui->entity_view->setModel(entity_model);
+	ui->entity_view->setEditTriggers(QAbstractItemView::NoEditTriggers);
+
+	this->category_model = controller.select_categories(this);
+	ui->category_view->setModel(category_model);
+	ui->category_view->setEditTriggers(QAbstractItemView::NoEditTriggers);
+
+	this->all_model = controller.select_money_flows(this);
+	ui->full_view->setModel(all_model);
+	ui->full_view->setEditTriggers(QAbstractItemView::NoEditTriggers);
 }
 
 void MainWindow::on_actionNew_triggered()
 {
-
+	controller.create_new_database(this);
+	init_models();
 }
 
 void MainWindow::on_actionOpen_triggered()
 {
-
+	if (!controller.open_database(this))
+	{
+		init_models();
+	}
 }
 

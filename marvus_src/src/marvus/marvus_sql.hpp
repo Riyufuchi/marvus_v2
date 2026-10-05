@@ -1,7 +1,7 @@
 //==============================================================================
 // Author     : riyufuchi
 // Created on : 2026-09-30
-// Last edit  : 2026-09-30
+// Last edit  : 2026-10-05
 // Copyright  : Copyright (c) 2026, riyufuchi
 //==============================================================================
 #ifndef MARVUS_SQL_HPP
@@ -40,12 +40,12 @@ FOREIGN KEY (category_id) REFERENCES CATEGORIES(category_id)
 
 constexpr auto insert_entity = R"(
 INSERT INTO ENTITIES (entity_name)
-VALUES (:name)
+VALUES (:entity_name)
 )";
 
 constexpr auto insert_category = R"(
 INSERT INTO CATEGORIES (category_name)
-VALUES (:name)
+VALUES (:category_name)
 )";
 
 constexpr auto insert_money_flow = R"(
@@ -53,10 +53,18 @@ INSERT INTO MONEY_FLOWS  (entity_id, category_id, amount, date)
 VALUES (:entity_id, :category_id, :amount, :date)
 )";
 
+constexpr auto select_all_entities = R"(
+SELECT * FROM ENTITIES
+)";
+
+constexpr auto select_all_categories = R"(
+SELECT * FROM CATEGORIES
+)";
+
 constexpr auto select_current_month_expenses = R"(
 SELECT
 CATEGORIES.category_name AS "Kategorie",
-SUM(MONEY_FLOWS.amount) AS "Celkem"
+SUM(MONEY_FLOWS.amount) / 100.00 AS "Celkem"
 FROM MONEY_FLOWS
 JOIN CATEGORIES
 	ON MONEY_FLOWS.category_id = CATEGORIES.category_id
@@ -64,6 +72,19 @@ WHERE MONEY_FLOWS.date >= date('now', 'start of month')
 AND MONEY_FLOWS.date < date('now', 'start of month', '+1 month')
 GROUP BY CATEGORIES.category_id
 ORDER BY "Kategorie"
+)";
+
+constexpr auto select_all_money_flows = R"(
+SELECT
+ENTITIES.entity_name AS "Entity",
+CATEGORIES.category_name AS "Kategorie",
+MONEY_FLOWS.amount / 100.00 AS "Částka",
+MONEY_FLOWS.date AS "Datum"
+FROM MONEY_FLOWS
+JOIN CATEGORIES
+	ON MONEY_FLOWS.category_id = CATEGORIES.category_id
+JOIN ENTITIES
+	ON MONEY_FLOWS.entity_id = ENTITIES.entity_id
 )";
 
 }

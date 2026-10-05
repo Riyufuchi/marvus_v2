@@ -1,7 +1,7 @@
 //==============================================================================
 // Author     : riyufuchi
 // Created on : 2026-04-28
-// Last edit  : 2026-10-04
+// Last edit  : 2026-10-05
 // Copyright  : Copyright (c) 2026, riyufuchi
 //==============================================================================
 #ifndef CONTROLLER_H
@@ -36,6 +36,9 @@ public:
 	bool open_database(QWidget* parent);
 	void import_from_json_to_db(QWidget* parent);
 	QSqlQueryModel* select(QObject* parent);
+	QSqlQueryModel* select_entities(QObject* parent);
+	QSqlQueryModel* select_categories(QObject* parent);
+	QSqlQueryModel* select_money_flows(QObject* parent);
 	Database& expose_db();
 };
 
