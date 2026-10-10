@@ -1,7 +1,7 @@
 //==============================================================================
 // Author     : riyufuchi
 // Created on : 2026-04-28
-// Last edit  : 2026-10-05
+// Last edit  : 2026-10-11
 // Copyright  : Copyright (c) 2026, riyufuchi
 //==============================================================================
 #include "database.h"
@@ -130,6 +130,11 @@ QSqlQueryModel* marvus::Database::get_categories(QObject* parent)
 QSqlQueryModel* marvus::Database::get_money_flows(QObject* parent)
 {
 	return select(parent, marvus_sql::select_all_money_flows);
+}
+
+QSqlQueryModel* marvus::Database::get_year_overview(QObject* parent)
+{
+	return select(parent, marvus_sql::year_overview);
 }
 
 bool marvus::Database::is_open() const

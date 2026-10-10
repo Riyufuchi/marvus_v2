@@ -1,7 +1,7 @@
 //==============================================================================
 // Author     : riyufuchi
 // Created on : 2026-04-28
-// Last edit  : 2026-10-05
+// Last edit  : 2026-10-11
 // Copyright  : Copyright (c) 2026, riyufuchi
 //==============================================================================
 #include "controller.h"
@@ -64,6 +64,11 @@ QSqlQueryModel* marvus::Controller::select_categories(QObject* parent)
 QSqlQueryModel* marvus::Controller::select_money_flows(QObject* parent)
 {
 	return db_connection.get_money_flows(parent);
+}
+
+QSqlQueryModel* marvus::Controller::select_year_overview(QObject* parent)
+{
+	return db_connection.get_year_overview(parent);
 }
 
 marvus::Database& marvus::Controller::expose_db()

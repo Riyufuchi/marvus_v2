@@ -1,7 +1,7 @@
 //==============================================================================
 // Author     : riyufuchi
 // Created on : 2026-04-28
-// Last edit  : 2026-10-05
+// Last edit  : 2026-10-11
 // Copyright  : Copyright (c) 2026, riyufuchi
 //==============================================================================
 #ifndef CONTROLLER_H
@@ -39,6 +39,7 @@ public:
 	QSqlQueryModel* select_entities(QObject* parent);
 	QSqlQueryModel* select_categories(QObject* parent);
 	QSqlQueryModel* select_money_flows(QObject* parent);
+	QSqlQueryModel* select_year_overview(QObject* parent);
 	Database& expose_db();
 };
 

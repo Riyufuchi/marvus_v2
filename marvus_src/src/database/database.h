@@ -1,7 +1,7 @@
 //==============================================================================
 // Author     : riyufuchi
 // Created on : 2026-04-28
-// Last edit  : 2026-10-05
+// Last edit  : 2026-10-11
 // Copyright  : Copyright (c) 2026, riyufuchi
 //==============================================================================
 #ifndef DATABASE_H
@@ -39,6 +39,7 @@ public:
 	QSqlQueryModel* get_entities(QObject* parent);
 	QSqlQueryModel* get_categories(QObject* parent);
 	QSqlQueryModel* get_money_flows(QObject* parent);
+	QSqlQueryModel* get_year_overview(QObject* parent);
 	//
 	const QString& get_last_error() const;
 	// IS functions
