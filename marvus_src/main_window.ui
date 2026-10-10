@@ -18,7 +18,7 @@
     <item row="0" column="0">
      <widget class="QTabWidget" name="tabWidget">
       <property name="currentIndex">
-       <number>3</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="tab">
        <attribute name="title">
@@ -47,16 +47,6 @@
        <layout class="QGridLayout" name="gridLayout_4">
         <item row="0" column="0">
          <widget class="QTableView" name="category_view"/>
-        </item>
-       </layout>
-      </widget>
-      <widget class="QWidget" name="tab_4">
-       <attribute name="title">
-        <string>All logs</string>
-       </attribute>
-       <layout class="QGridLayout" name="gridLayout_5">
-        <item row="0" column="0">
-         <widget class="QTableView" name="full_view"/>
         </item>
        </layout>
       </widget>
@@ -110,6 +100,9 @@
     <property name="title">
      <string>Overview mode</string>
     </property>
+    <addaction name="actionCurrent_month"/>
+    <addaction name="actionAll_logs"/>
+    <addaction name="actionYear_overview"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuData"/>
@@ -176,6 +169,21 @@
   <action name="actionBackup">
    <property name="text">
     <string>Backup</string>
+   </property>
+  </action>
+  <action name="actionCurrent_month">
+   <property name="text">
+    <string>Current month</string>
+   </property>
+  </action>
+  <action name="actionAll_logs">
+   <property name="text">
+    <string>All logs</string>
+   </property>
+  </action>
+  <action name="actionYear_overview">
+   <property name="text">
+    <string>Year overview</string>
    </property>
   </action>
  </widget>

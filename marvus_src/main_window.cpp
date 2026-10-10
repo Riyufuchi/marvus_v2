@@ -1,13 +1,13 @@
 //==============================================================================
 // Author     : riyufuchi
 // Created on : 2026-04-15
-// Last edit  : 2026-10-05
+// Last edit  : 2026-10-10
 // Copyright  : Copyright (c) 2026, riyufuchi
 //==============================================================================
 #include "main_window.h"
 #include "ui_main_window.h"
 
-MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow)
+MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow), current_tab_view(TabView::CURRENT_MONTH)
 {
 	ui->setupUi(this);
 	on_actionOpen_triggered();
@@ -54,18 +54,15 @@ void MainWindow::on_actionImport_triggered()
 		}
 	}
 
-	model->refresh();
 	entity_model->refresh();
 	category_model->refresh();
-	all_model->refresh();
+
+	for (const auto& model : model_map)
+		model.second->refresh();
 }
 
 void  MainWindow::init_models()
 {
-	this->model = controller.select(this);
-	ui->db_view->setModel(model);
-	ui->db_view->setEditTriggers(QAbstractItemView::NoEditTriggers);
-
 	this->entity_model = controller.select_entities(this);
 	ui->entity_view->setModel(entity_model);
 	ui->entity_view->setEditTriggers(QAbstractItemView::NoEditTriggers);
@@ -74,9 +71,11 @@ void  MainWindow::init_models()
 	ui->category_view->setModel(category_model);
 	ui->category_view->setEditTriggers(QAbstractItemView::NoEditTriggers);
 
-	this->all_model = controller.select_money_flows(this);
-	ui->full_view->setModel(all_model);
-	ui->full_view->setEditTriggers(QAbstractItemView::NoEditTriggers);
+	model_map[TabView::CURRENT_MONTH] = std::unique_ptr<QSqlQueryModel>(controller.select(this));
+	model_map[TabView::ALL_LOGS] = std::unique_ptr<QSqlQueryModel>(controller.select_money_flows(this));
+
+	ui->db_view->setModel(model_map.at(TabView::CURRENT_MONTH).get());
+	ui->db_view->setEditTriggers(QAbstractItemView::NoEditTriggers);
 }
 
 void MainWindow::on_actionNew_triggered()
@@ -91,5 +90,26 @@ void MainWindow::on_actionOpen_triggered()
 	{
 		init_models();
 	}
+}
+
+void MainWindow::select_model(TabView tabView)
+{
+	current_tab_view = tabView;
+	switch (tabView)
+	{
+	case TabView::CURRENT_MONTH: ui->db_view->setModel(model_map.at(tabView).get()); break;
+	case TabView::ALL_LOGS: ui->db_view->setModel(model_map.at(tabView).get()); break;
+	}
+}
+
+void MainWindow::on_actionCurrent_month_triggered()
+{
+	select_model(TabView::CURRENT_MONTH);
+}
+
+
+void MainWindow::on_actionAll_logs_triggered()
+{
+	select_model(TabView::ALL_LOGS);
 }
 

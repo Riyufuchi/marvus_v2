@@ -8,6 +8,9 @@
 #define MAIN_WINDOW_H
 
 #include <QMainWindow>
+// STD
+#include <unordered_map>
+#include <memory>
 // Nocovka
 #include "src/controller.h"
 #include "src/marvus/marvus_test_data.hpp"
@@ -21,9 +24,18 @@ class MainWindow : public QMainWindow
 	Q_OBJECT
 
 private:
+	enum class TabView
+	{
+		CURRENT_MONTH,
+		ALL_LOGS/*,
+		YEAR_OVERVIEW*/
+	};
 	marvus::Controller controller;
-	QSqlQueryModel* model, *entity_model, *category_model, *all_model;
+	TabView current_tab_view;
+	QSqlQueryModel* entity_model, *category_model;
+	std::unordered_map<TabView, std::unique_ptr<QSqlQueryModel>> model_map;
 	void init_models();
+	void select_model(TabView tabView);
 public:
 	MainWindow(QWidget *parent = nullptr);
 	~MainWindow();
@@ -36,6 +48,10 @@ private slots:
 	void on_actionNew_triggered();
 
 	void on_actionOpen_triggered();
+
+	void on_actionCurrent_month_triggered();
+
+	void on_actionAll_logs_triggered();
 
 private:
 	Ui::MainWindow *ui;
