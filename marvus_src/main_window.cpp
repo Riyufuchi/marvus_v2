@@ -1,7 +1,7 @@
 //==============================================================================
 // Author     : riyufuchi
 // Created on : 2026-04-15
-// Last edit  : 2026-10-11
+// Last edit  : 2026-10-13
 // Copyright  : Copyright (c) 2026, riyufuchi
 //==============================================================================
 #include "main_window.h"
@@ -74,6 +74,7 @@ void  MainWindow::init_models()
 	model_map[TabView::CURRENT_MONTH] = std::unique_ptr<QSqlQueryModel>(controller.select(this));
 	model_map[TabView::ALL_LOGS] = std::unique_ptr<QSqlQueryModel>(controller.select_money_flows(this));
 	model_map[TabView::YEAR_OVERVIEW] = std::unique_ptr<QSqlQueryModel>(controller.select_year_overview(this));
+	model_map[TabView::CURRENT_MONTH_BY_ENTITY] = std::unique_ptr<QSqlQueryModel>(controller.select_by_entity(this));
 
 	ui->db_view->setModel(model_map.at(TabView::CURRENT_MONTH).get());
 	ui->db_view->setEditTriggers(QAbstractItemView::NoEditTriggers);
@@ -99,12 +100,6 @@ void MainWindow::select_model(TabView tabView)
 	ui->db_view->setModel(model_map.at(tabView).get());
 }
 
-void MainWindow::on_actionCurrent_month_triggered()
-{
-	select_model(TabView::CURRENT_MONTH);
-}
-
-
 void MainWindow::on_actionAll_logs_triggered()
 {
 	select_model(TabView::ALL_LOGS);
@@ -114,5 +109,17 @@ void MainWindow::on_actionAll_logs_triggered()
 void MainWindow::on_actionYear_overview_triggered()
 {
 	select_model(TabView::YEAR_OVERVIEW);
+}
+
+
+void MainWindow::on_actionBy_category_triggered()
+{
+	select_model(TabView::CURRENT_MONTH);
+}
+
+
+void MainWindow::on_actionBy_Entity_triggered()
+{
+	select_model(TabView::CURRENT_MONTH_BY_ENTITY);
 }
 

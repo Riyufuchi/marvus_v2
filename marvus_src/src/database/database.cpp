@@ -1,7 +1,7 @@
 //==============================================================================
 // Author     : riyufuchi
 // Created on : 2026-04-28
-// Last edit  : 2026-10-11
+// Last edit  : 2026-10-13
 // Copyright  : Copyright (c) 2026, riyufuchi
 //==============================================================================
 #include "database.h"
@@ -115,6 +115,11 @@ QSqlQueryModel* marvus::Database::select(QObject* parent, const QString& select_
 QSqlQueryModel* marvus::Database::get_current_month_expenses(QObject* parent)
 {
 	return select(parent, marvus_sql::select_current_month_expenses);
+}
+
+QSqlQueryModel* marvus::Database::get_current_month_expenses_by_entity(QObject* parent)
+{
+	return select(parent, marvus_sql::select_current_month_expenses_by_entity);
 }
 
 QSqlQueryModel* marvus::Database::get_entities(QObject* parent)

@@ -1,7 +1,7 @@
 //==============================================================================
 // Author     : riyufuchi
 // Created on : 2026-04-28
-// Last edit  : 2026-10-11
+// Last edit  : 2026-10-13
 // Copyright  : Copyright (c) 2026, riyufuchi
 //==============================================================================
 #include "controller.h"
@@ -49,6 +49,11 @@ void marvus::Controller::import_from_json_to_db(QWidget* parent)
 QSqlQueryModel* marvus::Controller::select(QObject* parent)
 {
 	return db_connection.get_current_month_expenses(parent);
+}
+
+QSqlQueryModel* marvus::Controller::select_by_entity(QObject* parent)
+{
+	return db_connection.get_current_month_expenses_by_entity(parent);
 }
 
 QSqlQueryModel* marvus::Controller::select_entities(QObject* parent)

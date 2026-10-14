@@ -1,7 +1,7 @@
 //==============================================================================
 // Author     : riyufuchi
 // Created on : 2026-04-28
-// Last edit  : 2026-10-11
+// Last edit  : 2026-10-13
 // Copyright  : Copyright (c) 2026, riyufuchi
 //==============================================================================
 #ifndef DATABASE_H
@@ -35,7 +35,10 @@ public:
 	int insert_entity(const EnumEntity& entity);
 	int insert_money_flow(const MoneyFlow& money_flow);
 	//
+	//TODO: Turn into enum based selection
 	QSqlQueryModel* get_current_month_expenses(QObject* parent);
+	QSqlQueryModel* get_current_month_expenses_by_entity(QObject* parent);
+	// END OF TODO
 	QSqlQueryModel* get_entities(QObject* parent);
 	QSqlQueryModel* get_categories(QObject* parent);
 	QSqlQueryModel* get_money_flows(QObject* parent);

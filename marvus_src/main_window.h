@@ -1,7 +1,7 @@
 //==============================================================================
 // Author     : riyufuchi
 // Created on : 2026-04-15
-// Last edit  : 2026-10-11
+// Last edit  : 2026-10-13
 // Copyright  : Copyright (c) 2026, riyufuchi
 //==============================================================================
 #ifndef MAIN_WINDOW_H
@@ -27,6 +27,7 @@ private:
 	enum class TabView
 	{
 		CURRENT_MONTH,
+		CURRENT_MONTH_BY_ENTITY,
 		ALL_LOGS,
 		YEAR_OVERVIEW
 	};
@@ -49,11 +50,13 @@ private slots:
 
 	void on_actionOpen_triggered();
 
-	void on_actionCurrent_month_triggered();
-
 	void on_actionAll_logs_triggered();
 
 	void on_actionYear_overview_triggered();
+
+	void on_actionBy_category_triggered();
+
+	void on_actionBy_Entity_triggered();
 
 private:
 	Ui::MainWindow *ui;

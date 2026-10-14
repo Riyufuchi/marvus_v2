@@ -74,6 +74,19 @@ GROUP BY CATEGORIES.category_id
 ORDER BY "Kategorie"
 )";
 
+constexpr auto select_current_month_expenses_by_entity = R"(
+SELECT
+ENTITIES.entity_name AS "Entity",
+SUM(MONEY_FLOWS.amount) / 100.00 AS "Celkem"
+FROM MONEY_FLOWS
+JOIN ENTITIES
+	ON MONEY_FLOWS.entity_id = ENTITIES.entity_id
+WHERE MONEY_FLOWS.date >= date('now', 'start of month')
+AND MONEY_FLOWS.date < date('now', 'start of month', '+1 month')
+GROUP BY ENTITIES.entity_id
+ORDER BY "Entity"
+)";
+
 constexpr auto select_all_money_flows = R"(
 SELECT
 ENTITIES.entity_name AS "Entity",

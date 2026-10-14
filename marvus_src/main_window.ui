@@ -100,9 +100,18 @@
     <property name="title">
      <string>Overview mode</string>
     </property>
-    <addaction name="actionCurrent_month"/>
+    <widget class="QMenu" name="menuCurrent_month_by_category">
+     <property name="title">
+      <string>Current month</string>
+     </property>
+     <addaction name="actionBy_category"/>
+     <addaction name="actionBy_Entity"/>
+     <addaction name="actionBy_entity_category"/>
+    </widget>
+    <addaction name="menuCurrent_month_by_category"/>
     <addaction name="actionAll_logs"/>
     <addaction name="actionYear_overview"/>
+    <addaction name="actionYear_summary"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuData"/>
@@ -171,11 +180,6 @@
     <string>Backup</string>
    </property>
   </action>
-  <action name="actionCurrent_month">
-   <property name="text">
-    <string>Current month</string>
-   </property>
-  </action>
   <action name="actionAll_logs">
    <property name="text">
     <string>All logs</string>
@@ -184,6 +188,26 @@
   <action name="actionYear_overview">
    <property name="text">
     <string>Year overview</string>
+   </property>
+  </action>
+  <action name="actionBy_category">
+   <property name="text">
+    <string>By category</string>
+   </property>
+  </action>
+  <action name="actionBy_Entity">
+   <property name="text">
+    <string>By Entity</string>
+   </property>
+  </action>
+  <action name="actionBy_entity_category">
+   <property name="text">
+    <string>By entity &amp; category</string>
+   </property>
+  </action>
+  <action name="actionYear_summary">
+   <property name="text">
+    <string>Year summary</string>
    </property>
   </action>
  </widget>
